@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Программа 3/3: рельеф, спина, гибкость</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#EEF3F5;--card:#fff;--ink:#14232B;--mute:#566872;--ac:#0B7A6E;--acs:#D6EFEA;--ln:#D3DEE3;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101A1F;--card:#17252C;--ink:#E7F0F3;--mute:#9DB1BA;--ac:#4FD1BE;--acs:#17403C;--ln:#2A3C44}}
+:root[data-theme="dark"]{--bg:#101A1F;--card:#17252C;--ink:#E7F0F3;--mute:#9DB1BA;--ac:#4FD1BE;--acs:#17403C;--ln:#2A3C44}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 Manrope,system-ui,sans-serif}
+main{max-width:640px;margin:0 auto;padding:20px 16px 40px}
+h1{font-size:30px;line-height:1.1;font-weight:800;margin:8px 0 6px}
+h2{font-size:20px;margin:0 0 4px;font-weight:800}
+p{margin:0 0 8px}.m{color:var(--mute);font-size:14px}
+.lv{position:sticky;top:env(safe-area-inset-top,0px);z-index:2;background:var(--bg);padding:10px 0;display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.lv button{font:600 13px/1.2 inherit;font-family:inherit;padding:10px 4px;border:1.5px solid var(--ln);background:var(--card);color:var(--ink);border-radius:10px}
+.lv button[aria-pressed=true]{background:var(--ac);border-color:var(--ac);color:var(--bg)}
+.hint{background:var(--acs);border-radius:10px;padding:10px 12px;margin:4px 0 16px;font-size:14px}
+.day{background:var(--card);border:1px solid var(--ln);border-radius:14px;padding:16px;margin-bottom:14px}
+.ex{border-top:1px solid var(--ln);padding:10px 0}
+.ex b{display:block}.ex span{color:var(--ac);font-weight:600;font-size:14px}
+.ex div{margin-top:2px}
+.cd{margin-top:8px;font-size:14px;color:var(--mute)}
+details{background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:12px 14px;margin-bottom:8px}
+summary{font-weight:800;cursor:pointer}
+details p{margin-top:8px;font-size:15px}
+.st{display:flex;gap:8px;align-items:center;margin:8px 0}.st button{font:800 20px inherit;width:44px;height:44px;border:1.5px solid var(--ln);background:var(--card);color:var(--ink);border-radius:10px}.st div{flex:1;font-size:15px}.st i{font-size:12px;color:var(--mute);font-style:normal}ol{margin:6px 0 0;padding-left:20px;font-size:14px}.rule{background:var(--acs);border-radius:12px;padding:12px 14px;margin:12px 0;font-size:15px}.rule p{margin:0 0 6px}
+.big{font-size:64px;font-weight:800;margin:8px 0}.bar{height:6px;background:var(--ln);border-radius:3px;margin:4px 0 12px}.bar i{display:block;height:100%;background:var(--ac);border-radius:3px}button{font:600 16px Manrope,system-ui,sans-serif;width:100%;padding:14px;margin:6px 0;border-radius:12px;border:1.5px solid var(--ln);background:var(--card);color:var(--ink)}button.p{background:var(--ac);border-color:var(--ac);color:var(--bg)}input,select,textarea{font:inherit;padding:8px;border-radius:8px;border:1.5px solid var(--ln);background:var(--bg);color:var(--ink)}input[type=number]{width:72px}.rs{margin-right:6px}textarea{width:100%;height:80px;margin:8px 0}select{width:100%;margin:6px 0}
+.nv{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.nv button{padding:10px 2px;font-size:13px;margin:0 0 10px}.nv button[aria-pressed=true]{background:var(--ac);border-color:var(--ac);color:var(--bg)}
+</style></head>
+<body><main id="app"></main><script>
+var T=["вес тела","сложнее","вес","инвентарь"],TT=["Толкай","Тяни","Ноги и пресс"],ADD=[1,1,4],
+W="Кошка-корова ×10 · «Книга» (поворот грудной клетки лёжа на боку) ×8 на сторону · Круги руками и лопатками ×10 · Глубокий присед 45 с · 10 приседов.";
+var D=[
+["День 1 · Толкай","Грудь, плечи, трицепс, ноги, кор","Грудь у дверного проёма 40 с на сторону · Поза ребёнка 40 с · Выпад-растяжка сгибателя бедра 45 с на сторону",[
+["Грудь","3×8–15",[[1,"Отжимания от опоры (стол, затем стул)","3×15 на стуле"],[1,"Отжимания с пола","3×15"],[2,"Стопы на стуле","3×12"],[2,"Лучник (в сторону)","3×6 на сторону"],[3,"С рюкзаком на спине","3×12 с 10 кг"],[4,"Жим гантелей, брусья с весом","+вес"]]],
+["Плечи","3×6–12",[[1,"Пайк-отжимания («уголок»)","3×12"],[2,"Пайк, стопы на стуле","3×10"],[2,"Стойка у стены, удержание","3×40 с"],[2,"Негативные отжимания в стойке","3×5"],[4,"Жим гантелей сидя, махи в стороны","+вес"]]],
+["Трицепс","3×8–15",[[1,"Обратные отжимания от стула, колени согнуты","3×15"],[1,"С прямыми ногами","3×15"],[2,"Узкие отжимания «треугольник»","3×12"],[2,"Сфинкс (разгибание рук с опорой на стол)","3×10"],[3,"Обратные отжимания, рюкзак на коленях","3×12 с 10 кг"],[4,"Французский жим, блок","+вес"]]],
+["Присед","3×8–20",[[1,"Присед, пауза 1 с внизу","3×20"],[1,"Пауза 3 с внизу","3×15"],[2,"На одной ноге к стулу с опорой рукой","3×8"],[2,"Пистолет с опорой на стену","3×6"],[3,"Кубковый, рюкзак у груди","3×15 с 10 кг"],[4,"Гоблет, штанга","+вес"]]],
+["Планка","3×30–60 с",[[1,"На предплечьях, таз подкручен","3×60 с"],[2,"С касанием плеч","3×10 на сторону"],[2,"Руки вынесены вперёд","3×40 с"],[2,"Скольжение рук на полотенце (роллаут)","3×10"],[3,"С рюкзаком на спине","3×45 с с 5 кг"],[4,"Ролик для пресса","+повторы"]]]]],
+["День 2 · Тяни","Спина, лопатки, ягодицы, бицепс","Поза ребёнка 45 с · Скручивание лёжа 40 с на сторону · Выпад-растяжка сгибателя бедра 45 с на сторону",[
+["Тяга (спина)","3×8–15",[[1,"Под прочным столом, колени согнуты","3×15"],[1,"С прямыми ногами","3×12"],[1,"Стопы на стуле","3×10"],[2,"Негативные подтягивания (5 с вниз)","3×6"],[2,"Подтягивания (без турника — тяга рюкзака)","3×8"],[3,"Подтягивания с рюкзаком","3×8 с 5 кг"],[4,"Тяга гантели, штанги","+вес"]]],
+["Лопатки Y-T-W","3×8 каждой",[[1,"Лёжа на животе, пауза 2 с","3×8"],[1,"Пауза 5 с","3×8"],[2,"С поднятой грудью и ногами","3×8"],[3,"С бутылками","3×10 с 1,5 л"],[4,"Разводка в наклоне, резинка к лицу","+вес"]]],
+["Разгибатели спины","3×10–12",[[1,"Супермен, пауза 2 с","3×12"],[1,"Пауза 5 с","3×10"],[2,"Пловец (поочерёдно)","3×20"],[4,"Гиперэкстензия","+повторы"]]],
+["Ягодицы","3×10–20",[[1,"Мостик, пауза 2 с","3×20"],[2,"На одной ноге","3×12 на ногу"],[2,"На одной ноге, плечи на стуле","3×10 на ногу"],[3,"С рюкзаком на тазу, плечи на стуле","3×15 с 15 кг"],[4,"Хип-траст со штангой","+вес"]]],
+["Бицепс","3×6–15",[[1,"Тяга под столом ладонями к себе","3×15"],[1,"С прямыми ногами","3×12"],[2,"Негативные подтягивания обратным хватом","3×8"],[2,"Подтягивания обратным хватом","3×6"],[3,"Сгибания с рюкзаком или канистрами","3×12 с 5 кг"],[4,"Гантели, штанга","+вес"]]]]],
+["День 3 · Ноги и пресс","Ноги, бёдра, икры, пресс","Выпад-растяжка 45 с на сторону · Наклон к ногам сидя 45 с · «Голубь» 45 с на сторону · Глубокий присед 1 мин",[
+["Выпады","3×8–15 на ногу",[[1,"Обратные выпады","3×15"],[1,"С паузой 3 с внизу","3×12"],[2,"Болгарский сплит, нога на стуле","3×12"],[2,"Болгарский сплит, пауза 3 с","3×10"],[3,"Болгарский сплит, рюкзак у груди","3×12 с 10 кг"],[4,"Гантели, штанга","+вес"]]],
+["Задняя поверхность бедра","3×8–12",[[1,"«Ласточка» без веса","3×10 на ногу"],[1,"На одной ноге, касание пола","3×10 на ногу"],[2,"Сгибание ног в мостике на полотенце","3×10"],[3,"Румынская тяга, рюкзак в руках","3×12 с 10 кг"],[4,"Румынская тяга со штангой","+вес"]]],
+["Икры","3×15–25",[[1,"Подъёмы на носки двумя, медленно","3×25"],[2,"На одной ноге со ступеньки","3×20"],[2,"Пауза 3 с вверху и внизу","3×15"],[3,"С рюкзаком на одной ноге","3×15 с 10 кг"],[4,"Гантель, тренажёр","+вес"]]],
+["Нижний пресс","3×10–15",[[1,"Подъём ног лёжа, поясница прижата","3×15"],[2,"«Лодочка», удержание","3×40 с"],[2,"Подъём коленей в висе","3×12"],[2,"Подъём прямых ног в висе","3×10"],[4,"Ролик, подъём ног с весом","+повторы"]]],
+["Косые, боковой кор","3×8–12 на сторону",[[1,"Птица-собака, пауза 3 с","3×12"],[1,"Боковая планка на колене","3×30 с"],[2,"Боковая планка","3×45 с"],[2,"С подъёмом таза","3×12"],[2,"С подъёмом верхней ноги","3×10"],[4,"Паллоф с резинкой","+вес"]]]]],
+["Каждый день · Блок осанки (6 мин)","Шея, плечи, таз, живот. После разминки и в рабочие дни","",[
+["Подбородок","10×5–10 с",[[1,"Втягивание подбородка лёжа","10×5 с, шея не напряжена"],[1,"Стоя у стены, затылок давит","10×8 с"],[2,"Втягивание и подъём головы на 1 см лёжа","10×10 с"],[4,"Резинка к лицу и втягивание","+повторы"]]],
+["Ангелы у стены","2×10–12",[[1,"Затылок, лопатки, таз у стены","2×10"],[1,"Удержание 3 с вверху","2×12"],[3,"С бутылками 0,5 л","2×12"],[4,"Разведение резинки","+повторы"]]],
+["Мёртвый жук (таз)","3×8",[[1,"Подкрутка таза лёжа, поясница прижата","10×5 с"],[1,"Ноги по очереди, колени 90°","3×8"],[2,"Рука и противоположная нога","3×8"],[2,"С прямыми ногами","3×8"],[3,"С бутылками в руках","3×8 с 1,5 л"],[4,"Ролик, паллоф","+повторы"]]],
+["Вакуум (живот)","5×15–30 с",[[1,"Лёжа, выдох, втянуть живот","5×20 с"],[1,"На четвереньках","5×25 с"],[2,"Стоя","5×30 с"],[2,"В планке на коленях","5×30 с"]]]]]];
+var K="trn1",st=ld(),cur=null,iv=null;
+function ld(){try{var s=JSON.parse(localStorage.getItem(K));if(s)return s}catch(e){}return{ex:{},day:0,block:1,time:"10:00",hist:[],next:""}}
+function sv(){try{localStorage.setItem(K,JSON.stringify(st))}catch(e){}}
+function $(h){document.getElementById("app").innerHTML=h;window.scrollTo(0,0)}
+function p2(n){return String(n).padStart(2,"0")}
+function fd(d){return d.toLocaleString("ru-RU",{weekday:"long",day:"numeric",month:"long",hour:"2-digit",minute:"2-digit"})}
+function ge(di,xi){var k=di+"-"+xi;return st.ex[k]||(st.ex[k]={i:0,s:0,f:1})}
+function par(g,r){var q=g,m=q.match(/(\d+)×(\d+)/);if(!m){q=r;m=q.match(/(\d+)×\d+[–-](\d+)/)||q.match(/(\d+)×(\d+)/)}
+var sc=/×\d+(?:[–-]\d+)? с(?:,|$| с )/.test(q),n=+m[1],t=+m[2];if(sc&&n>5){t=n*t;n=1}return{n:n,t:t,sc:sc,side:/сторон|ног/.test(q)}}
+function beep(){try{var a=new(window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator();o.connect(a.destination);o.frequency.value=880;o.start();setTimeout(function(){o.stop()},400)}catch(e){}}
+function cd(sec,el,fn){clearInterval(iv);var t=sec;el.textContent=t;iv=setInterval(function(){t--;el.textContent=t;if(t<=0){clearInterval(iv);beep();if(fn)fn()}},1000)}
+function build(d,op){var s=[],del=st.block%4==0&&!op;if(!op)s.push({k:"i",h:"Разминка (8 мин)",x:W});
+[3,d].forEach(function(di){if(op&&di!=3)return;D[di][3].forEach(function(x,xi){var e=ge(di,xi),c=x[2][e.i],p=par(c[2],x[1]),n=del?Math.min(2,p.n):p.n;
+for(var j=1;j<=n;j++){s.push({k:"s",key:di+"-"+xi,di:di,xi:xi,name:x[0],st:c[1],g:c[2],j:j,n:n,p:p});s.push({k:"r",sec:di==3?30:60})}})});
+if(!op)s.push({k:"i",h:"Заминка (10 мин)",x:D[d][2]});
+return s.filter(function(a,i){return a.k!="r"||(s[i+1]&&s[i+1].k=="s")}).map(function(a,i,l){if(a.k=="r"){var b=l[i+1];a.nm=b.name+" — "+b.st}return a})}
+function go(d,op){cur={d:d,op:op,steps:build(d,op),p:0,res:{}};show()}
+function nx(){cur.p++;show()}
+function dn(){var s=cur.steps[cur.p];(cur.res[s.key]=cur.res[s.key]||[]).push(+document.getElementById("v").value||0);nx()}
+function show(){clearInterval(iv);var s=cur.steps[cur.p];if(!s)return report();
+var h='<div class="m">Шаг '+(cur.p+1)+' из '+cur.steps.length+' <a href="#" onclick="home();return false">· выйти</a></div><div class="bar"><i style="width:'+Math.round(cur.p/cur.steps.length*100)+'%"></i></div>';
+if(s.k=="i")return $(h+'<div class="day"><h2>'+s.h+'</h2><p>'+s.x+'</p></div><button class="p" onclick="nx()">Готово, дальше</button>');
+if(s.k=="r"){$(h+'<div class="day" style="text-align:center"><h2>Отдых</h2><div class="big" id="t"></div><p class="m">Дальше: '+s.nm+'</p></div><button onclick="nx()">Пропустить</button>');return cd(s.sec,document.getElementById("t"),nx)}
+var p=s.p;$(h+'<div class="day"><p class="m">'+s.name+' · подход '+s.j+' из '+s.n+'</p><h2>'+s.st+'</h2><p>Схема: '+s.g+'. Цель: '+p.t+(p.sc?' с':' повторов')+(p.side?' на каждую сторону':'')+'</p>'
++(p.sc?'<div class="big" id="t">'+p.t+'</div><button onclick="cd('+p.t+',document.getElementById(\'t\'),function(){document.getElementById(\'v\').value='+p.t+'})">Старт таймера</button>':'')
++'<p>Сделал: <input type="number" id="v" value="'+p.t+'" min="0"></p></div><button class="p" onclick="dn()">Подход готов</button>')}
+function rows(){var a=[],z={};cur.steps.forEach(function(s){if(s.k=="s"&&!z[s.key]){z[s.key]=1;a.push(s)}});return a}
+function report0(){$('<h1>Отчёт</h1>'+rows().map(function(s,i){return'<div class="day"><b>'+s.name+'</b><div class="m">'+s.st+' · цель '+s.p.t+(s.p.sc?' с':'')+'</div><p>'+(cur.res[s.key]||[]).map(function(v){return'<input type="number" class="rs" data-k="'+s.key+'" value="'+v+'">'}).join("")+'</p><label><input type="checkbox" id="c'+i+'" checked> техника чистая</label><br><label><input type="checkbox" id="b'+i+'"> была боль или дискомфорт</label></div>'}).join("")+'<textarea id="nt" placeholder="Заметки: самочувствие, что было тяжело"></textarea><button class="p" onclick="fin()">Сохранить и поставить напоминание</button>')}
+function fin0(){var del=st.block%4==0&&!cur.op,ch=[],it=[];
+rows().forEach(function(s,i){var r=[].map.call(document.querySelectorAll('.rs[data-k="'+s.key+'"]'),function(e){return+e.value||0}),pn=document.getElementById("b"+i).checked,
+e=ge(s.di,s.xi),l=D[s.di][3][s.xi][2],ok=document.getElementById("c"+i).checked&&!pn&&r.length>=s.n&&r.every(function(v){return v>=s.p.t}),up=0;
+it.push({name:s.name,res:r,clean:ok,pain:pn});
+if(pn){ch.push(s.name+": боль, переход заморожен. Если повторяется — к врачу");return}if(del)return;
+if(ok){e.s++;if(e.s>=2&&e.i<l.length-1){e.i++;e.s=0;e.f=1;up=1;ch.push("↑ "+s.name+": "+l[e.i][1])}}
+else{e.s=0;if(e.f&&e.i>0&&Math.max.apply(null,r.concat(0))<(s.p.sc?s.p.t*.4:5)){e.i--;e.f=0;up=1;ch.push("↓ "+s.name+": вернулись на «"+l[e.i][1]+"»")}}
+if(!up)e.f=0});
+st.hist.push({date:new Date().toLocaleDateString("ru-RU"),t:cur.op?"Блок осанки":"День "+(cur.d+1),items:it,note:document.getElementById("nt").value});
+var nt="";if(!cur.op){var n=new Date(),hm=st.time.split(":");n.setDate(n.getDate()+ADD[cur.d]);n.setHours(+hm[0],+hm[1],0,0);st.next=n.toISOString();st.day=(cur.d+1)%3;if(cur.d==2)st.block++;nt="Следующая тренировка: День "+(st.day+1)+", "+fd(n)+". Файл напоминания скачан — открой его двойным щелчком, и событие добавится в календарь."}
+sv();if(!cur.op)dl();
+$('<h1>Готово</h1><div class="day"><h2>Изменения</h2><p>'+(del?"Облегчённый блок: ступени не менялись.":ch.join("<br>")||"Переходов нет: цель закрепляется, держи чистую технику.")+'</p><p>'+nt+'</p></div><button class="p" onclick="home()">На главную</button>')}
+function dl(){var n=new Date(st.next),f=function(d){return d.getFullYear()+p2(d.getMonth()+1)+p2(d.getDate())+"T"+p2(d.getHours())+p2(d.getMinutes())+"00"},
+c=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//trn//RU","BEGIN:VEVENT","UID:"+Date.now()+"@trn","DTSTAMP:"+new Date().toISOString().replace(/[-:]/g,"").slice(0,15)+"Z","DTSTART:"+f(n),"DTEND:"+f(new Date(n.getTime()+36e5)),"SUMMARY:Тренировка: День "+(st.day+1)+" · "+TT[st.day],"BEGIN:VALARM","ACTION:DISPLAY","DESCRIPTION:Тренировка","TRIGGER:-PT30M","END:VALARM","END:VEVENT","END:VCALENDAR"].join("\r\n"),
+a=document.createElement("a");a.href=URL.createObjectURL(new Blob([c],{type:"text/calendar;charset=utf-8"}));a.download="trenirovka.ics";a.click()}
+function home0(){clearInterval(iv);cur=null;var d=st.day;
+$('<h1>Тренировки 3/3</h1><p class="m">Блок '+st.block+(st.block%4==0?' · облегчённый: 2 подхода, без повышения':'')+'</p><div class="day"><h2>День '+(d+1)+' · '+TT[d]+'</h2><p class="m">Разминка → блок осанки → упражнения → заминка → отчёт</p><select id="sd">'+TT.map(function(t,i){return'<option value="'+i+'"'+(i==d?' selected':'')+'>День '+(i+1)+' · '+t+'</option>'}).join("")+'</select><p class="m">Время тренировки: <input type="time" value="'+st.time+'" onchange="st.time=this.value;sv()"></p><button class="p" onclick="go(+document.getElementById(\'sd\').value,0)">Начать тренировку</button><button onclick="go(0,1)">Только блок осанки (рабочий день, 6 мин)</button>'
++(st.next?'<p class="m">Следующая: '+fd(new Date(st.next))+'</p><button onclick="dl()">Скачать напоминание (.ics)</button>':'')+'</div><h2>История</h2>'
++(st.hist.slice(-5).reverse().map(function(h){return'<div class="day"><b>'+h.date+'</b> · '+h.t+'<br><span class="m">'+h.items.map(function(i){return i.name+': '+i.res.join("/")}).join(" · ")+'</span></div>'}).join("")||'<p class="m">Пока пусто.</p>'))}
+function iso(d){return d.getFullYear()+"-"+p2(d.getMonth()+1)+"-"+p2(d.getDate())}
+st.oats=st.oats||100;st.on=st.on||"h";st.w=st.w||[];st.sp=st.sp||{};st.start=st.start||iso(new Date());
+st.t=st.t||{b:"08:00",s:"12:30",w:"15:00",l:"14:00",d:"19:30",c:"17:30"};
+var tab=0,ft=0,fired="",
+NU={mince:["Фарш говяжий (до 10% жира)",176,20,10,0,500],oats:["Геркулес",370,12,6.5,62,800],egg:["Яйца",143,12.6,10,.7,550,55],carrot:["Морковь",41,.9,.2,9.6,1000,100],onion:["Лук",40,1.1,.1,9.3,1000,40],oil:["Масло растительное",884,0,100,0,0],rice:["Рис",350,7,.7,78,800],fish:["Рыба (горбуша, филе)",140,21,6.5,0,400],pot:["Картофель",77,2,.4,16.3,1000,120],veg:["Овощи (капуста, перец)",30,1.5,.2,6,500],nut:["Орехи грецкие",654,15,65,14,200],milk:["Молоко 3,2%",60,3,3.2,4.8,1000,0,"мл"],kmb:["КМБ-80",360,80,3,5,500],ban:["Банан (очищенный)",89,1.1,.3,22.8,120,120],cr:["Креатин моногидрат",0,0,0,0,300]},
+DT=[["b","s","l","d"],["b","s"]],
+SP={b:["паприка сладкая + чёрный перец + чеснок сушёный","зира + кориандр + копчёная паприка","тимьян + чёрный перец + щепотка мускатного ореха","куркума + чёрный перец + имбирь","орегано + базилик + чеснок"],l:["зира + барбарис + куркума (классика)","паприка + кориандр + лавровый лист","чабрец + чёрный перец + чеснок","тмин + паприка + чеснок","карри + чёрный перец + кинза"],d:["укроп + лимон + чёрный перец","розмарин + чеснок + цедра лимона","паприка + тимьян","кориандр + имбирь + лимон","петрушка + чеснок + горчица"]};
+function pw(k){return k=="onion"?(st.on=="s"?100:40):NU[k][6]}
+function M(){var o=st.oats;return{
+b:{n:"Завтрак: овсяно-мясные котлеты",i:[["mince",150],["oats",o],["egg",110],["carrot",80],["onion",40],["oil",5]],r:"Смешай фарш, геркулес, яйца, тёртую морковь, лук и специи. Жарь по 4–5 мин с каждой стороны или 20 мин в духовке при 190 °C. В рабочие дни — из заготовки, разогрей."},
+s:{n:"Коктейль",i:[["kmb",10],["ban",120],["milk",300],["cr",5]],r:"Блендер: молоко, банан, КМБ-80, креатин. Пей сразу."},
+l:{n:"Обед: плов с фаршем",i:[["mince",120],["rice",100],["carrot",100],["onion",60],["oil",10]],r:"Обжарь лук и морковь, добавь фарш, рис, воду (в 1,5 раза больше по объёму) и специи. 25 мин под крышкой."},
+d:{n:"Ужин: рыба, картофель, овощи",i:[["fish",180],["pot",300],["veg",150],["oil",5],["nut",30]],r:"Рыба в духовке 15–20 мин при 190 °C, картофель отварной, овощи свежие или тушёные, орехи на десерт."}}}
+function mac(m){var a=[0,0,0,0];m.i.forEach(function(q){var u=NU[q[0]];for(var j=0;j<4;j++)a[j]+=u[j+1]*q[1]/100});return a}
+function pc(k,x){var p=pw(k);return p&&k!="milk"?" (≈ "+(k=="egg"?Math.round(x/p):Math.max(1,Math.round(x/p*2)/2))+" шт)":""}
+function ql(q){var u=NU[q[0]];return u[0]+" — "+q[1]+" "+(u[7]||"г")+pc(q[0],q[1])}
+function mt(a){return Math.round(a[0])+" ккал · Б "+Math.round(a[1])+" · Ж "+Math.round(a[2])+" · У "+Math.round(a[3])}
+function nav(t){return'<div class="nv">'+[["Сегодня","home"],["Питание","food"],["Покупки","shop"],["Добавки","sup"]].map(function(x,i){return'<button aria-pressed="'+(i==t)+'" onclick="'+x[1]+'()">'+x[0]+'</button>'}).join("")+'</div>'}
+function cyc(){var s=new Date(st.start+"T00:00:00"),n=new Date();return((Math.round((new Date(n.getFullYear(),n.getMonth(),n.getDate())-s)/864e5)%6)+6)%6}
+function sch(c){var t=st.t;if(c>2)return[[t.b,"Завтрак (котлеты)"],[t.w,"Коктейль"]];
+var a=[[st.time,"Тренировка: День "+(c+1)+" · "+TT[c]],[t.b,"Завтрак"],[t.s,"Коктейль после тренировки"],[t.l,"Обед"],[t.d,"Ужин"]];
+if(c==0)a.push([t.c,"Готовка: плов и котлеты на дни 2–3"]);if(c==2)a.push([t.c,"Готовка: котлеты на 3 рабочих завтрака"]);return a}
+function home(){tab=0;var c=cyc();if(c<3)st.day=c;home0();document.getElementById("app").insertAdjacentHTML("afterbegin",nav(0)+'<div class="rule"><b>Сегодня: '+(c<3?"тренировочный день "+(c+1)+" · "+TT[c]:"рабочий день "+(c-2))+'</b><br>'+sch(c).map(function(x){return x[0]+" "+x[1]}).join("<br>")+'</div>')}
+function rr(k){var n=SP[k].length,i=st.sp[k]||0,j;do{j=Math.floor(Math.random()*n)}while(j==i&&n>1);st.sp[k]=j;sv();food()}
+function tm(k){return k=="s"&&ft?st.t.w:st.t[k]}
+function food(){tab=1;var o=M(),T=[0,0,0,0],h=nav(1)+'<h1>Питание</h1><p class="m">Рычаг профицита — геркулес в завтраке: <b>'+st.oats+' г</b>. Меняется сам по весу из отчёта.</p><div class="nv" style="grid-template-columns:1fr 1fr"><button aria-pressed="'+(ft==0)+'" onclick="ft=0;food()">Тренировочный день</button><button aria-pressed="'+(ft==1)+'" onclick="ft=1;food()">Рабочий день</button></div>';
+DT[ft].forEach(function(k){var m=o[k],a=mac(m);a.forEach(function(v,j){T[j]+=v});
+h+='<div class="day"><h2>'+m.n+'</h2><p class="m">'+tm(k)+' · '+mt(a)+'</p>'+m.i.map(function(q){return'<div class="ex">'+ql(q)+'</div>'}).join("")+'<p class="m">'+m.r+'</p>'+(SP[k]?'<p><b>Специи:</b> '+SP[k][st.sp[k]||0]+'</p><button onclick="rr(\''+k+'\')">🎲 Другие специи</button>':'')+'</div>'});
+h+='<div class="day"><b>Итого по плану: '+mt(T)+'</b>'+(ft?'<p class="m">Остальное в рабочие дни вне плана: добавь не меньше 50 г белка (яйца, творог, курица, рыба).</p>':'')+'</div>'+
+'<div class="day"><h2>Напоминания</h2>'+[["b","Завтрак"],["s","Коктейль (трен. день)"],["w","Коктейль (рабочий)"],["l","Обед"],["d","Ужин"],["c","Готовка"]].map(function(x){return'<p>'+x[1]+': <input type="time" value="'+st.t[x[0]]+'" onchange="st.t.'+x[0]+'=this.value;sv()"></p>'}).join("")
++'<p>Первый тренировочный день цикла: <input type="date" value="'+st.start+'" onchange="st.start=this.value;sv()"></p><p>Лук: <select onchange="st.on=this.value;sv()"><option value="h"'+(st.on=="h"?" selected":"")+'>домашний мелкий (~40 г)</option><option value="s"'+(st.on=="s"?" selected":"")+'>магазинный водянистый (~100 г)</option></select></p><button class="p" onclick="ical()">Скачать календарь цикла (.ics)</button><button onclick="ntf()">Уведомления в приложении</button><p class="m">Календарь повторяется каждые 6 дней: тренировки, еда и готовка. Откроешь файл — события добавятся сами. Уведомления работают, пока окно приложения открыто.</p></div>';$(h)}
+function ntf(){try{Notification.requestPermission().then(function(r){alert(r=="granted"?"Уведомления включены":"Разрешение не выдано")})}catch(e){}}
+function fl(d){return d.getFullYear()+p2(d.getMonth()+1)+p2(d.getDate())+"T"+p2(d.getHours())+p2(d.getMinutes())+"00"}
+function ical(){var L=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//trn//RU"],s=new Date(st.start+"T00:00:00"),z=new Date().toISOString().replace(/[-:]/g,"").slice(0,15)+"Z";
+for(var c=0;c<6;c++)sch(c).forEach(function(x,i){var h=x[0].split(":"),d=new Date(s.getFullYear(),s.getMonth(),s.getDate()+c,+h[0],+h[1]);
+L.push("BEGIN:VEVENT","UID:c"+c+"-"+i+"@trn","DTSTAMP:"+z,"DTSTART:"+fl(d),"DTEND:"+fl(new Date(d.getTime()+18e5)),"RRULE:FREQ=DAILY;INTERVAL=6","SUMMARY:"+x[1],"BEGIN:VALARM","ACTION:DISPLAY","DESCRIPTION:"+x[1],"TRIGGER:-PT5M","END:VALARM","END:VEVENT")});
+L.push("END:VCALENDAR");var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([L.join("\r\n")],{type:"text/calendar;charset=utf-8"}));a.download="cikl.ics";a.click()}
+function shop(){tab=2;var o=M(),t={},h=nav(2)+'<h1>Покупки на 6 дней</h1><p class="m">Один блок: 3 тренировочных дня и 3 рабочих. Геркулес сейчас '+st.oats+' г в день.</p>';
+[[0,3],[1,3]].forEach(function(x){DT[x[0]].forEach(function(k){o[k].i.forEach(function(q){t[q[0]]=(t[q[0]]||0)+q[1]*x[1]})})});
+Object.keys(t).forEach(function(k){var u=NU[k],g=t[k],p=u[5],p1=pw(k),b;
+if(k=="egg"){var n=Math.ceil(g/p1-1e-9);b=Math.ceil(n/10)+" дес. ("+Math.ceil(n/10)*10+" шт)"}else if(k=="ban"){b=Math.ceil(g/p1-1e-9)+" шт"}else if(p){b=Math.ceil(g/p)+" × "+p+" "+(u[7]||"г")}else b="≈ "+Math.round(g)+" г";
+h+='<div class="ex"><b>'+u[0]+'</b>Нужно: '+(k=="egg"?Math.round(g/p1)+" шт":Math.round(g)+" "+(u[7]||"г")+pc(k,g))+'<div class="m">Купить: '+b+'</div></div>'});
+$(h+'<p class="m">Креатина и КМБ-80 хватает надолго: банка покупается раз в несколько месяцев.</p>')}
+function sup(){tab=3;$(nav(3)+'<h1>Добавки</h1><div class="day"><h2>Брать</h2><p><b>Креатин моногидрат, 5 г в день.</b> Самая изученная добавка для мышц, стоит копейки. Нужен чистый моногидрат без «HCl» и «буферных» форм, загрузка не нужна. Про волосы: выпадение у креатина не доказано, а рост ДГТ видели в одном исследовании 2009 года, и он не повторился.</p><p><b>Витамин D3, 1000–2000 МЕ в день осенью и зимой.</b> Капли в масле дешевле капсул. Лучше сдать анализ 25-OH D: ориентир 30–50 нг/мл.</p><p><b>Омега-3, только если рыбы меньше 2 раз в неделю.</b> Смотри на EPA+DHA на порцию (цель около 1 г в день), а не на «1000 мг рыбьего жира». В плане рыба стоит в ужине.</p></div><div class="day"><h2>Только по анализам</h2><p>Железо (ферритин), цинк, B12: пей, только если анализ показал дефицит. Избыток вреден.</p></div><div class="day"><h2>Не покупать</h2><p>Биотин и «комплексы для волос и ногтей»: без дефицита пользы нет, а биотин искажает анализы (щитовидка, сердце). Коллаген, BCAA, глютамин, бустеры тестостерона — маркетинг. Яйца и мясо в плане уже закрывают биотин, цинк и железо.</p></div><div class="day"><h2>Для волос и кожи головы едой</h2><p>Белок 1,8–2 г на кг, яйца, говядина (железо, цинк), жирная рыба 2 раза в неделю, орехи, морковь, овощи с витамином C. Жёсткие диеты и резкий дефицит калорий сильнее всего бьют по волосам.</p></div>')}
+function adj(b){var A=function(n){var w=st.w.filter(function(x){return x.b==n}).map(function(x){return x.w});return w.length>1?w.reduce(function(a,c){return a+c},0)/w.length:null},a=A(b),p=A(b-1);
+if(b<3||a==null||p==null)return"Геркулес остаётся "+st.oats+" г. Для подбора нужны 2+ взвешивания за блок; первые 2 блока не считаются (вода от креатина).";
+var d=a-p,o=st.oats,n=o;if(d<.1)n=Math.min(200,o+25);else if(d>.45)n=Math.max(50,o-25);st.oats=n;
+return"Вес за блок: "+(d>0?"+":"")+d.toFixed(2)+" кг (цель +0,10…+0,45). Геркулес: "+o+" → "+n+" г"+(n==o?" (без изменений)":"")}
+function report(){report0();document.getElementById("nt").insertAdjacentHTML("beforebegin",'<p>Вес утром, кг (для подбора калорий): <input type="number" step="0.1" id="wt" style="width:90px"></p>')}
+function fin(){var w=parseFloat((document.getElementById("wt")||{}).value),b=st.block;if(w>0)st.w.push({b:b,w:w});fin0();
+if(st.block>b){var m=adj(b);sv();document.getElementById("app").insertAdjacentHTML("beforeend",'<div class="day"><h2>Питание</h2><p>'+m+'</p></div>')}else sv()}
+setInterval(function(){var n=new Date(),h=p2(n.getHours())+":"+p2(n.getMinutes());sch(cyc()).forEach(function(x){if(x[0]==h&&fired!=h+x[1]){fired=h+x[1];beep();try{new Notification(x[1])}catch(e){}}})},20000);
+home();
+</script></body></html>
