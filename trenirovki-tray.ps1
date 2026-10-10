@@ -30,7 +30,7 @@ function Invoke-GitPush([string]$repo, [string]$dl) {
         if (-not (Test-Path -LiteralPath (Join-Path $repo '.git'))) { return ('ERR|Нет git-репозитория: ' + $repo) }
         $env:GIT_TERMINAL_PROMPT = '0'
         $copied = 0
-        foreach ($n in 'trenirovki.html', 'trenirovki-tray.ps1', 'ustanovit-tray.bat', 'push-github.bat', 'raspisanie.docx', 'manifest.webmanifest', 'sw.js', 'icon-192.png', 'icon-512.png') {
+        foreach ($n in 'trenirovki.html', 'trenirovki-tray.ps1', 'ustanovit-tray.bat', 'push-github.bat', 'zapusk.bat', 'raspisanie.docx', 'manifest.webmanifest', 'sw.js', 'icon-192.png', 'icon-512.png') {
             $b = [regex]::Escape([IO.Path]::GetFileNameWithoutExtension($n))
             $x = [regex]::Escape([IO.Path]::GetExtension($n))
             $c = Get-ChildItem -LiteralPath $dl -File -ErrorAction SilentlyContinue | Where-Object { $_.Name -ieq $n -or $_.Name -match ('^' + $b + ' \(\d+\)' + $x + '$') } | Sort-Object LastWriteTime -Descending | Select-Object -First 1
@@ -79,6 +79,13 @@ function Set-Autostart([bool]$on) {
 if ($PSScriptRoot -ne $target) {
     try {
         New-Item -ItemType Directory -Path $target -Force | Out-Null
+        # Закрываем старую копию трея: она держит мьютекс, и новая версия иначе не запустится
+        try {
+            Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" -ErrorAction SilentlyContinue |
+                Where-Object { $_.ProcessId -ne $PID -and $_.CommandLine -like '*trenirovki-tray.ps1*' -and $_.CommandLine -notlike '*-Push*' } |
+                ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }
+        } catch { }
+        Start-Sleep -Milliseconds 600
         Copy-Item -Path $PSCommandPath -Destination $self -Force -ErrorAction Stop
         Set-Autostart $true
         Start-Process powershell.exe -ArgumentList ('-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "' + $self + '"')
@@ -96,6 +103,7 @@ if (-not $created) { exit }
 
 $default = @'
 {
+ "v": 3,
  "url": "https://helvylist.github.io/trenirovki/trenirovki.html",
  "start": "2026-10-08",
  "days": [
@@ -106,27 +114,27 @@ $default = @'
     "m": 30
    },
    {
-    "t": "10:00",
-    "n": "Тренировка · День 1 · Толкай",
-    "m": 52
-   },
-   {
-    "t": "11:02",
-    "n": "Коктейль",
-    "m": 10
-   },
-   {
-    "t": "12:00",
+    "t": "11:30",
     "n": "Готовка на 3 дня: обед и ужин",
     "m": 90
    },
    {
-    "t": "14:00",
+    "t": "13:30",
     "n": "Обед",
     "m": 30
    },
    {
-    "t": "19:30",
+    "t": "17:30",
+    "n": "Тренировка · День 1 · Толкай",
+    "m": 52
+   },
+   {
+    "t": "18:32",
+    "n": "Коктейль",
+    "m": 10
+   },
+   {
+    "t": "20:00",
     "n": "Ужин",
     "m": 30
    }
@@ -138,22 +146,22 @@ $default = @'
     "m": 30
    },
    {
-    "t": "10:00",
+    "t": "13:30",
+    "n": "Обед",
+    "m": 30
+   },
+   {
+    "t": "17:30",
     "n": "Тренировка · День 2 · Тяни",
     "m": 51
    },
    {
-    "t": "11:01",
+    "t": "18:31",
     "n": "Коктейль",
     "m": 10
    },
    {
-    "t": "14:00",
-    "n": "Обед",
-    "m": 30
-   },
-   {
-    "t": "19:30",
+    "t": "20:00",
     "n": "Ужин",
     "m": 30
    }
@@ -165,22 +173,22 @@ $default = @'
     "m": 30
    },
    {
-    "t": "10:00",
-    "n": "Тренировка · День 3 · Ноги и пресс",
-    "m": 51
-   },
-   {
-    "t": "11:01",
-    "n": "Коктейль",
-    "m": 10
-   },
-   {
-    "t": "14:00",
+    "t": "13:30",
     "n": "Обед",
     "m": 30
    },
    {
-    "t": "19:30",
+    "t": "17:30",
+    "n": "Тренировка · День 3 · Ноги и пресс",
+    "m": 51
+   },
+   {
+    "t": "18:31",
+    "n": "Коктейль",
+    "m": 10
+   },
+   {
+    "t": "20:00",
     "n": "Ужин",
     "m": 30
    }
@@ -277,7 +285,7 @@ if (-not $dl) { $dl = Join-Path $env:USERPROFILE 'Downloads' }
 function Get-Cfg {
     $files = Get-ChildItem -Path (Join-Path $target 'tray-config*.json'), (Join-Path $dl 'tray-config*.json') | Sort-Object LastWriteTime -Descending
     foreach ($f in $files) {
-        try { $c = Get-Content -Path $f.FullName -Raw -Encoding UTF8 | ConvertFrom-Json; if ($c.days) { return $c } } catch { }
+        try { $c = Get-Content -Path $f.FullName -Raw -Encoding UTF8 | ConvertFrom-Json; if ($c.days -and ([int]$c.v -ge [int]$default.v)) { return $c } } catch { }
     }
     return $default
 }
@@ -293,9 +301,17 @@ function Get-Plan([datetime]$day) {
     return @($out | Sort-Object Start)
 }
 
+# Открывает локальный trenirovki.html из папки репозитория (те же данные, что и у zapusk.bat).
+# Если файла нет, открывает версию на GitHub Pages.
 function Open-App {
-    try { Start-Process 'msedge.exe' -ArgumentList ('--app=' + $script:cfg.url) -ErrorAction Stop }
-    catch { Start-Process $script:cfg.url }
+    $u = $null
+    try {
+        $f = Join-Path (Get-Repo) 'trenirovki.html'
+        if (Test-Path -LiteralPath $f) { $u = ([System.Uri]$f).AbsoluteUri }
+    } catch { }
+    if (-not $u) { $u = [string]$script:cfg.url }
+    try { Start-Process 'msedge.exe' -ArgumentList ('--app="' + $u + '"') -ErrorAction Stop }
+    catch { Start-Process $u }
 }
 
 $script:cfg = Get-Cfg
